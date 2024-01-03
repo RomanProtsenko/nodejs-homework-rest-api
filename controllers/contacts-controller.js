@@ -1,15 +1,15 @@
 import HttpError from '../helpers/HttpError.js';
 import { ctrlWrapper } from '../decorators/index.js';
-import Contact from '../models/Contact.js';
+import * as contactsService from '../models/contacts.js'
 
 const getAllContacts = async (req, res) => {
-  const result = await Contact.find();
+  const result = await contactsService.listContacts();
   res.json(result);
 };
 
 const getContactById = async (req, res) => {
   const { id } = req.params;
-  const result = await Contact.findById(id);
+  const result = await contactsService.getContactById(id);
   if (!result) {
     throw HttpError(404, `Not found`);
   }
@@ -18,24 +18,14 @@ const getContactById = async (req, res) => {
 
 const addContact = async (req, res) => {
   const { body } = req;
-  const result = await Contact.create(body);
+  const result = await contactsService.addContact(body);
   res.status(201).json(result);
 };
 
 const updateContact = async (req, res) => {
   const { id } = req.params;
   const { body } = req;
-  const result = await Contact.findByIdAndUpdate(id, body);
-  if (!result) {
-    throw HttpError(404, `Not found`);
-  }
-  res.json(result);
-};
-
-const updateStatusContact = async (req, res) => {
-  const { id } = req.params;
-  const { body } = req;
-  const result = await Contact.findByIdAndUpdate(id, body, { new: true });
+  const result = await contactsService.updateContact(id, body);
   if (!result) {
     throw HttpError(404, `Not found`);
   }
@@ -44,7 +34,7 @@ const updateStatusContact = async (req, res) => {
 
 const removeContact = async (req, res) => {
   const { id } = req.params;
-  const result = await Contact.findByIdAndDelete(id);
+  const result = await contactsService.removeContact(id);
   if (!result) {
     throw HttpError(404, `Not found`);
   }
@@ -58,6 +48,5 @@ export default {
   getContactById: ctrlWrapper(getContactById),
   addContact: ctrlWrapper(addContact),
   updateContact: ctrlWrapper(updateContact),
-  updateFavorite: ctrlWrapper(updateStatusContact),
   removeContact: ctrlWrapper(removeContact),
 };
