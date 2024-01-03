@@ -2,7 +2,7 @@ import express from "express";
 
 import contactsController from "../../controllers/contacts-controller.js";
 
-import { isEmptyBody, isValidId, authenticate } from "../../middlewares/index.js";
+import { isEmptyBody, isValidId } from "../../middlewares/index.js";
 
 import { validateBody } from "../../decorators/index.js";
 
@@ -14,8 +14,6 @@ const contactUpdateFavoriteValidate = validateBody(contactUpdateFavoriteSchema)
 
 const contactsRouter = express.Router();
 
-contactsRouter.use(authenticate);
-
 contactsRouter.get('/', contactsController.getAllContacts);
 
 contactsRouter.get('/:id', isValidId, contactsController.getContactById);
@@ -26,8 +24,6 @@ contactsRouter.put('/:id', isValidId, isEmptyBody, contactAddValidate, contactsC
 
 contactsRouter.patch("/:id/favorite", isValidId, contactUpdateFavoriteValidate, contactsController.updateFavorite);
 
-contactsRouter.delete('/:id', isValidId, contactsController.removeContact);
-
-
+contactsRouter.delete('/:id', isValidId, contactsController.removeContact)
 
 export default contactsRouter;
