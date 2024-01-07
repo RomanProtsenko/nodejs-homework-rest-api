@@ -14,7 +14,7 @@ const userUpdateFavorite = validateBody(updateSubscriptionSchema)
 
 const authRouter = express.Router();
 
-authRouter.post('/register', upload.single("poster"), isEmptyBody, userSignupValidate, authController.register);
+authRouter.post('/register', isEmptyBody, userSignupValidate, authController.register);
 
 authRouter.post('/login', isEmptyBody, userSigninValidate, authController.login);
 
