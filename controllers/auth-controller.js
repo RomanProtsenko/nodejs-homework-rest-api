@@ -122,6 +122,9 @@ const updateSubscription = async (req, res) => {
 
 const updateAvatarUser = async (req, res) => {
     const { _id } = req.user;
+ if (!req.file) {
+        return res.status(400).json({ error: 'Файл не був надісланий.' });
+    } 
     const { path: tmpPath, filename } = req.file;
     const newPath = path.join(avatarsPath, filename);
     const file = await Jimp.read(tmpPath);
